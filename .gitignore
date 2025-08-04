@@ -1,0 +1,41 @@
+# Fișiere sensibile
+*token*
+*secret*
+*key*
+.env
+*.pem
+*.p12
+*.pfx
+
+# State files (pot conține căi locale)
+state_archive.json
+upload_errors_with_*.txt
+
+# Fișiere Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+
+# Fișiere IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Fișiere sistem
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Fișiere temporare
+*.tmp
+*.temp
+*.log
+
+# Chrome debug files
+debug.log
