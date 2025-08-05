@@ -1,0 +1,67 @@
+Înțeleg cerința ta. Voi crea un script Python care:
+1. Scanează recursiv folderul `g:\ARHIVA\B\`
+2. Verifică pe Internet Archive dacă fișierele există deja
+3. Șterge folderele locale care conțin fișiere deja încărcate
+4. Ignoră sufixele automate (_202508, etc.) și numerele din titluriÎți ofer și fișierul batch pentru pornirea Chrome cu remote debugging:Am creat pentru tine un sistem complet cu două componente:
+
+## 1. **Script-ul principal Python** (`archive_duplicate_checker.py`)
+Acest script:
+- 📂 Scanează recursiv toate subfolderele din `g:\ARHIVA\B\`
+- 🔍 Verifică pe Internet Archive dacă fișierele există deja
+- 🗑️ Șterge automat folderele locale care conțin fișiere deja încărcate
+- ⏱️ Așteaptă 10 secunde între verificări pentru a nu suprasolicita serverul
+- 📝 Creează log-uri detaliate și salvează starea pentru reluare
+
+## 2. **Fișierul batch** (`start_chrome_debug.bat`)
+Pentru pornirea Chrome în modul debug
+
+## Caracteristici speciale implementate:
+
+### ✨ **Curățare inteligentă a titlurilor:**
+- Elimină sufixele automate: `_202508`, `_20250804`, etc.
+- Elimină numerele din titluri: `"4. Comosicus"` → `"Comosicus"`
+- Elimină versiunile: `"v.1.0"`, `"V. 1.0"`
+- Elimină adnotările: `"cop1"`, `"cop2"`, `"retail"`, `"Vp"`
+- Păstrează formatul standard: `"Nume, Prenume - Titlu"`
+
+### 🛡️ **Sistem de siguranță:**
+- Salvează starea după fiecare operațiune
+- Creează backup-uri ale informațiilor despre folderele șterse
+- Log detaliat cu timestamp pentru fiecare acțiune
+- Posibilitate de reluare după întrerupere
+
+### 📊 **Raportare:**
+- Raport final cu statistici complete
+- Listă detaliată a folderelor șterse
+- Evidența erorilor întâmpinate
+- Fișier log cu toate operațiunile
+
+## Cum să folosești:
+
+1. **Pornește Chrome în modul debug:**
+   ```batch
+   start_chrome_debug.bat
+   ```
+
+2. **Rulează scriptul Python:**
+   ```python
+   python archive_duplicate_checker.py
+   ```
+
+3. **Monitorizează progresul:**
+   - Verifică mesajele în consolă
+   - Consultă fișierul log generat automat
+   - Verifică `archive_cleanup_state.json` pentru starea curentă
+
+## Fișiere generate:
+- `archive_cleanup_log_[timestamp].txt` - Log complet al operațiunilor
+- `archive_cleanup_state.json` - Starea salvată pentru reluare
+- Backup-uri ale informațiilor despre folderele șterse
+
+## Note importante:
+- ⚠️ **Atenție!** Scriptul șterge permanent folderele găsite pe Archive.org
+- 🔒 Recomand să faci un backup înainte de prima rulare
+- ⏸️ Poți întrerupe cu Ctrl+C și relua mai târziu
+- 📝 Verifică log-ul pentru a vedea exact ce s-a șters
+
+Scriptul este conceput să fie sigur și eficient, cu verificări multiple și toleranță la diferențe minore în titluri (typo-uri, spații, punctuație).

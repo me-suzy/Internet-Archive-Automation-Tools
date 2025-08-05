@@ -1,0 +1,28 @@
+[2025-08-06 00:24:34] [INFO] Stare încărcată: {'processed_folders': [], 'deleted_folders': [], 'last_processed': '2025-08-06T00:22:14.408409', 'api_failures': 0}
+[2025-08-06 00:24:34] [INFO] Stare salvată: processed=0, deleted=0
+[2025-08-06 00:24:34] [INFO] Lista processed_folders a fost resetată
+[2025-08-06 00:24:34] [INFO] Scanez folderele din: g:\ARHIVA\B
+[2025-08-06 00:24:34] [DEBUG] În folder Istoria dogmelor Bisericii Ortodoxe: 1 fișiere relevante
+[2025-08-06 00:24:34] [DEBUG] Curățare: fișier original = Boroianu, Dumitru - Istoria dogmelor Bisericii Ortodoxe.pdf
+[2025-08-06 00:24:34] [DEBUG] Curățare: titlu curățat = Boroianu, Dumitru - Istoria dogmelor Bisericii Ortodoxe
+[2025-08-06 00:24:34] [DEBUG] În folder Sinteze de noi coloranti reactivi cu randament___: 1 fișiere relevante
+[2025-08-06 00:24:34] [DEBUG] Curățare: fișier original = Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit.pdf
+[2025-08-06 00:24:34] [DEBUG] Curățare: titlu curățat = Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit
+[2025-08-06 00:24:34] [INFO] Total grupuri găsite: 2
+[2025-08-06 00:24:34] [INFO] Progres: 1/2 → Boroianu, Dumitru - Istoria dogmelor Bisericii Ortodoxe
+[2025-08-06 00:24:34] [INFO] Cerere API pentru titlu: 'Boroianu, Dumitru - Istoria dogmelor Bisericii Ortodoxe' → https://archive.org/advancedsearch.php params={'q': 'title:(Boroianu, Dumitru - Istoria dogmelor Bisericii Ortodoxe*)', 'fl[]': 'identifier', 'rows': 5, 'output': 'json'}
+[2025-08-06 00:24:34] [INFO] Răspuns API: numFound=0, raw={'responseHeader': {'status': 0, 'QTime': 10, 'params': {'query': 'title:(Boroianu, Dumitru - Istoria dogmelor Bisericii Ortodoxe*)', 'qin': 'title:(Boroianu, Dumitru - Istoria dogmelor Bisericii Ortodoxe*)', 'fields': 'identifier', 'wt': 'json', 'rows': 5, 'start': 0}}, 'response': {'numFound': 0, 'start': 0, 'docs': []}}
+[2025-08-06 00:24:34] [INFO] Stare salvată: processed=1, deleted=0
+[2025-08-06 00:24:34] [INFO] Aștept 5 secunde până la următorul...
+[2025-08-06 00:24:39] [INFO] Progres: 2/2 → Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit
+[2025-08-06 00:24:39] [INFO] Cerere API pentru titlu: 'Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit' → https://archive.org/advancedsearch.php params={'q': 'title:(Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit*)', 'fl[]': 'identifier', 'rows': 5, 'output': 'json'}
+[2025-08-06 00:24:40] [INFO] Răspuns API: numFound=1, raw={'responseHeader': {'status': 0, 'QTime': 19, 'params': {'query': 'title:(Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit*)', 'qin': 'title:(Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit*)', 'fields': 'identifier', 'wt': 'json', 'rows': 5, 'start': 0}}, 'response': {'numFound': 1, 'start': 0, 'docs': [{'identifier': 'lungu-monica-elena-sinteze-de-noi-coloranti-reactivi-cu-randament-tinctorial-marit'}]}}
+[2025-08-06 00:24:40] [WARNING] Șterg folderul: g:\ARHIVA\B\Lungu, Monica Elena
+[2025-08-06 00:24:40] [INFO] Stare salvată: processed=1, deleted=1
+[2025-08-06 00:24:40] [INFO] Folder șters cu succes: g:\ARHIVA\B\Lungu, Monica Elena
+[2025-08-06 00:24:40] [INFO] Stare salvată: processed=2, deleted=1
+[2025-08-06 00:24:40] [INFO] 
+[RAPORT FINAL] -----------------------------
+[2025-08-06 00:24:40] [INFO] Fișiere verificate: 2
+[2025-08-06 00:24:40] [INFO] Foldere șterse: 1
+[2025-08-06 00:24:40] [INFO] [RAPORT FINAL] -----------------------------

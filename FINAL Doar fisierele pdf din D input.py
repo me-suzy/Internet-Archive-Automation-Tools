@@ -35,7 +35,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import WebDriverException, TimeoutException, NoSuchElementException
 
 # Configurari
-INPUT_PATH = Path(r"d:\3\Input")
+INPUT_PATH = Path(r"G:\3\Input")
 ARCHIVE_URL = "https://archive.org/upload"
 MAX_UPLOADS_PER_DAY = 9999
 STATE_FILENAME = "state_archive.json"
