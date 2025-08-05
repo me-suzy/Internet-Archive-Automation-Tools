@@ -1,0 +1,32 @@
+00:34:34 - INFO     - ==================================================
+00:34:34 - INFO     -  ARCHIVE DUPLICATE CLEANER v2.0 
+00:34:34 - INFO     - ==================================================
+00:34:34 - INFO     - Scanare începută în: g:\ARHIVA\B
+00:34:34 - INFO     - Scanare completă. Fișiere de verificat: 2
+00:34:34 - INFO     - 
+Progres: 1/2
+00:34:34 - INFO     - Verific: 'Boroianu, Dumitru Istoria dogmelor Bisericii Ortodoxe'
+00:34:38 - INFO     - 
+Progres: 2/2
+00:34:38 - INFO     - Verific: 'Lungu, Monica Elena Sinteze de noi coloranti reactivi cu randament tinctorial marit'
+00:34:39 - INFO     - Găsit: 'Lungu, Monica Elena Sinteze de noi coloranti reactivi cu randament tinctorial marit'
+00:34:39 - WARNING  - Ștergere: g:\ARHIVA\B\Lungu, Monica Elena
+00:34:39 - INFO     - Șters cu succes (19.35 MB)
+00:34:39 - INFO     - 
+==================================================
+ RAPORT FINAL 
+==================================================
+Fișiere verificate: 2
+Foldere șterse: 1
+Spațiu eliberat: 19.35 MB
+Erori întâlnite: 0
+
+Total istoric:
+Verificate: 2
+Șterse: 1
+Spațiu total eliberat: 19.35 MB
+==================================================
+00:34:39 - INFO     - Proces finalizat cu succes!
+00:35:17 - INFO     - goodbye ('127.0.0.1', 58968)
+00:35:17 - INFO     - listener closed
+00:35:17 - INFO     - server has terminated
