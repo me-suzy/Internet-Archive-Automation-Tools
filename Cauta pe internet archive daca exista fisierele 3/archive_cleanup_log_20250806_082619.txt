@@ -1,0 +1,70 @@
+[2025-08-06 08:26:19] [INFO] 📋 Stare încărcată: 5 foldere procesate anterior
+[2025-08-06 08:26:19] [INFO] ============================================================
+[2025-08-06 08:26:19] [INFO] 🚀 START - Internet Archive Duplicate Checker
+[2025-08-06 08:26:19] [INFO] 📁 Folder verificat: g:\ARHIVA\B
+[2025-08-06 08:26:19] [INFO] ⏱️ Delay între căutări: 2 secunde
+[2025-08-06 08:26:19] [INFO] ============================================================
+[2025-08-06 08:26:19] [INFO] 🔄 Resetez lista de foldere procesate pentru reverificare...
+[2025-08-06 08:26:19] [INFO] 📂 Scanez folderul: g:\ARHIVA\B
+[2025-08-06 08:26:19] [INFO] 📊 Găsite 5 titluri unice de verificat
+[2025-08-06 08:26:19] [INFO] 
+📊 Progres: 1/5
+[2025-08-06 08:26:19] [INFO] 📂 Folder: 55 de poeti contemporani (antologie)
+[2025-08-06 08:26:19] [INFO] 📄 Titlu căutat: Becart, Valentina - 55 de poeti contemporani. Pagini alese. Antologie
+[2025-08-06 08:26:19] [INFO] 🔍 Caut pe Archive.org: 'Becart, Valentina - 55 de poeti contemporani. Pagini alese. Antologie'
+[2025-08-06 08:26:20] [INFO]    ℹ️ Niciun rezultat găsit
+[2025-08-06 08:26:20] [INFO]    ℹ️ Păstrez folderul - nu există pe Archive.org
+[2025-08-06 08:26:20] [INFO] ⏳ Aștept 2 secunde...
+[2025-08-06 08:26:22] [INFO] 
+📊 Progres: 2/5
+[2025-08-06 08:26:22] [INFO] 📂 Folder: Antologie de poezie si comentarii
+[2025-08-06 08:26:22] [INFO] 📄 Titlu căutat: Becart, Valentina - Antologie de poezie si comentarii
+[2025-08-06 08:26:22] [INFO] 🔍 Caut pe Archive.org: 'Becart, Valentina - Antologie de poezie si comentarii'
+[2025-08-06 08:26:22] [INFO]    ℹ️ Niciun rezultat găsit
+[2025-08-06 08:26:22] [INFO]    ℹ️ Păstrez folderul - nu există pe Archive.org
+[2025-08-06 08:26:22] [INFO] ⏳ Aștept 2 secunde...
+[2025-08-06 08:26:24] [INFO] 
+📊 Progres: 3/5
+[2025-08-06 08:26:24] [INFO] 📂 Folder: Declin
+[2025-08-06 08:26:24] [INFO] 📄 Titlu căutat: Becart, Valentina - Declin Antologie
+[2025-08-06 08:26:24] [INFO] 🔍 Caut pe Archive.org: 'Becart, Valentina - Declin Antologie'
+[2025-08-06 08:26:25] [INFO]    ℹ️ Niciun rezultat găsit
+[2025-08-06 08:26:25] [INFO]    ℹ️ Păstrez folderul - nu există pe Archive.org
+[2025-08-06 08:26:25] [INFO] ⏳ Aștept 2 secunde...
+[2025-08-06 08:26:27] [INFO] 
+📊 Progres: 4/5
+[2025-08-06 08:26:27] [INFO] 📂 Folder: Doua lacrimi de cer
+[2025-08-06 08:26:27] [INFO] 📄 Titlu căutat: Becart, Valentina - Doua lacrimi de cer
+[2025-08-06 08:26:27] [INFO] 🔍 Caut pe Archive.org: 'Becart, Valentina - Doua lacrimi de cer'
+[2025-08-06 08:26:27] [INFO]    ℹ️ Niciun rezultat găsit
+[2025-08-06 08:26:27] [INFO]    ℹ️ Păstrez folderul - nu există pe Archive.org
+[2025-08-06 08:26:27] [INFO] ⏳ Aștept 2 secunde...
+[2025-08-06 08:26:29] [INFO] 
+📊 Progres: 5/5
+[2025-08-06 08:26:29] [INFO] 📂 Folder: Sinteze de noi coloranti reactivi cu randament___
+[2025-08-06 08:26:29] [INFO] 📄 Titlu căutat: Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit
+[2025-08-06 08:26:29] [INFO] 🔍 Caut pe Archive.org: 'Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit'
+[2025-08-06 08:26:29] [INFO]    ✅ GĂSIT pe Archive.org!
+[2025-08-06 08:26:29] [INFO]       ID: lungu-monica-elena-sinteze-de-noi-coloranti-reactivi-cu-randament-tinctorial-marit
+[2025-08-06 08:26:29] [INFO]       Titlu: Lungu, Monica Elena Sinteze De Noi Coloranti Reactivi Cu Randament Tinctorial Marit
+[2025-08-06 08:26:29] [WARNING] 🗑️ Șterg folderul: g:\ARHIVA\B\Lungu, Monica Elena
+[2025-08-06 08:26:29] [INFO]    Motivul: Fișierul 'Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit' există pe Archive.org
+[2025-08-06 08:26:29] [INFO]    ✅ Folder șters cu succes! (19.35 MB eliberat)
+[2025-08-06 08:26:29] [INFO] 
+============================================================
+[2025-08-06 08:26:29] [INFO] 📊 RAPORT FINAL
+[2025-08-06 08:26:29] [INFO] ============================================================
+[2025-08-06 08:26:29] [INFO] ✅ Fișiere verificate: 5
+[2025-08-06 08:26:29] [INFO] 🗑️ Foldere șterse: 1
+[2025-08-06 08:26:29] [INFO] ❌ Erori întâmpinate: 0
+[2025-08-06 08:26:29] [INFO] 💾 Spațiu total eliberat: 665029.26 MB
+[2025-08-06 08:26:29] [INFO] 📈 Total istoric foldere șterse: 15643
+[2025-08-06 08:26:29] [INFO] ============================================================
+[2025-08-06 08:26:29] [INFO] 
+📋 FOLDERE ȘTERSE ÎN ACEASTĂ SESIUNE:
+[2025-08-06 08:26:29] [INFO]    1. g:\ARHIVA\B\Lungu, Monica Elena
+[2025-08-06 08:26:29] [INFO]       Titlu: Lungu, Monica Elena - Sinteze de noi coloranti reactivi cu randament tinctorial marit
+[2025-08-06 08:26:29] [INFO]       Spațiu eliberat: 19.35 MB
+[2025-08-06 08:28:12] [INFO] goodbye ('127.0.0.1', 62296)
+[2025-08-06 08:28:12] [INFO] listener closed
+[2025-08-06 08:28:12] [INFO] server has terminated
