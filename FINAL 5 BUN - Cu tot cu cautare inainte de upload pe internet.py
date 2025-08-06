@@ -2,7 +2,8 @@
 """
 Automatizare incarcare fisiere pe Archive.org - Versiunea cu Subfoldere Recursiv:
 - Scaneaza RECURSIV toate subfolderele din g:\\ARHIVA\\B\\ (fara limita de nivel)
-- Pentru foldere cu PDF: incarca TOATE fisierele (exceptand .jpg/.png) pe archive.org
+- Verifica in prealabil pe Internet Archive daca fisierele exista; daca da, sterge folderul local si sare la urmatorul
+- Daca nu exista, incarca TOATE fisierele (exceptand .jpg/.png) pe archive.org
 - Pentru foldere fara PDF: muta un fisier specific in d:\\3\\ cu OVERWRITE
 - Prioritate fisiere: .mobi, .epub, .djvu, .docx, .doc, .lit, rtf
 - Completeaza automat campurile pe archive.org
@@ -28,7 +29,7 @@ import sys
 import re
 import json
 import shutil
-import difflib
+import requests
 from datetime import datetime
 from pathlib import Path
 from selenium import webdriver
@@ -40,7 +41,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import WebDriverException, TimeoutException, NoSuchElementException
 
 # Configurari
-ARCHIVE_PATH = Path(r"g:\ARHIVA\B+")
+ARCHIVE_PATH = Path(r"g:\ARHIVA\B")
 MOVE_PATH = Path(r"d:\3")
 TEMP_PATH = Path(r"g:\TEMP")  # NOUĂ: Pentru fișierele cu erori
 ARCHIVE_URL = "https://archive.org/upload"
@@ -216,9 +217,140 @@ class ArchiveUploader:
             print(f"❌ Eroare la scanarea folderelor: {e}")
             return []
 
+    def clean_title_for_search(self, filename):
+        """Curăță numele fișierului pentru căutare pe Internet Archive"""
+        name = Path(filename).stem
+        print(f"[CLEAN] original filename: {filename}")
+
+        # Elimină extensia și sufixele comune
+        name = re.sub(r'[_-]\d{6,8}$', '', name)
+        name = re.sub(r'\s*[\(\[].*?[\)\]]', '', name)
+        name = re.sub(r'\b[vV]\.?\s*\d+([\.\-]\d+)*\b', '', name)
+
+        # Elimină sufixele tehnice
+        suffixes = ['scan', 'ctrl', 'retail', r'cop\d+', 'Vp', 'draft', 'final', 'ocr', 'edit',
+                    'proof', 'beta', 'alpha', 'test', 'demo', 'sample', 'preview', 'full',
+                    'complete', 'fix', 'corrected']
+        pattern = r'\b(' + '|'.join(suffixes) + r')\b'
+        name = re.sub(pattern, '', name, flags=re.IGNORECASE)
+
+        # Curăță caracterele speciale și spațiile
+        name = re.sub(r'[^\w\s-]', ' ', name)
+        name = re.sub(r'\s+[-–]\s*$', '', name)  # Elimină liniuțele de la sfârșit
+        name = re.sub(r'\s+', ' ', name).strip()
+
+        print(f"[CLEAN] cleaned title: {name}")
+        return name
+
+    def exists_on_archive(self, title):
+        """Verifică dacă un titlu există pe Internet Archive folosind API-ul"""
+        # Curăță titlul pentru căutare
+        clean_title = re.sub(r'[^\w\s-]', ' ', title)
+        clean_title = re.sub(r'\s+', ' ', clean_title).strip()
+
+        # Încearcă mai multe variante de căutare
+        search_variants = [
+            clean_title,
+            clean_title.replace(' - ', ' '),
+            ' '.join(clean_title.split()[:4]),  # Primele 4 cuvinte
+            ' '.join(clean_title.split()[:2])   # Primele 2 cuvinte
+        ]
+
+        url = "https://archive.org/advancedsearch.php"
+        headers = {"User-Agent": "ArchiveUploader/1.0"}
+
+        for variant in search_variants:
+            if not variant.strip():
+                continue
+
+            # Încearcă căutări simple fără caractere speciale
+            simple_queries = [
+                variant,
+                f'"{variant}"',
+                variant.split()[0] if variant.split() else variant
+            ]
+
+            for query in simple_queries:
+                params = {
+                    "q": query,
+                    "fl[]": "identifier",
+                    "rows": 10,
+                    "output": "json"
+                }
+
+                print(f"[API] Caut: '{query}' → {url}")
+
+                for attempt in range(1, 4):
+                    try:
+                        resp = requests.get(url, params=params, headers=headers, timeout=15)
+                        resp.raise_for_status()
+                        data = resp.json()
+
+                        # Verifică dacă răspunsul are erori
+                        if "error" in data:
+                            print(f"[API] Eroare în răspuns: {data['error']}")
+                            continue
+
+                        num_found = data.get("response", {}).get("numFound", 0)
+                        print(f"[API] Răspuns pentru '{query}': numFound={num_found}")
+
+                        if num_found > 0:
+                            # Verifică dacă vreun rezultat se potrivește cu titlul original
+                            docs = data.get("response", {}).get("docs", [])
+                            for doc in docs[:3]:  # Verifică primele 3 rezultate
+                                identifier = doc.get("identifier", "")
+                                print(f"[API] Găsit identifier: {identifier}")
+                                # Dacă identifier-ul conține părți din titlul original
+                                title_words = clean_title.lower().split()[:3]
+                                if any(word in identifier.lower() for word in title_words if len(word) > 3):
+                                    print(f"[API] ✅ Titlul EXISTĂ pe Internet Archive!")
+                                    return True
+
+                            # Dacă găsește rezultate dar nu se potrivește exact, continuă căutarea
+                            print(f"[API] Găsite {num_found} rezultate dar nu se potrivesc exact")
+
+                        break  # Ieși din loop-ul de retry pentru această căutare
+
+                    except requests.RequestException as e:
+                        print(f"[API] Eroare attempt {attempt}: {e}")
+                        if attempt < 3:
+                            time.sleep(2)
+                        continue
+
+                # Dacă a găsit rezultate exacte, oprește căutările
+                if num_found > 0:
+                    break
+
+        print(f"[API] ❌ Titlul '{title}' NU există pe Internet Archive")
+        return False
+
+    def delete_folder(self, folder_path):
+        """Șterge un folder și toate subfișierele sale"""
+        try:
+            print(f"🗑️ Șterg folderul: {folder_path}")
+            shutil.rmtree(folder_path)
+            print(f"✅ Folder șters cu succes: {folder_path}")
+            return True
+        except Exception as e:
+            print(f"❌ Eroare la ștergerea folderului: {e}")
+            return False
+
     def process_single_unit(self, unit):
         """Procesează o singură unitate (orice nivel de folder)"""
         print(f"\n📂 Procesez unitatea: {unit['name']}")
+
+        # Verifică dacă titlul există pe Internet Archive
+        search_title = self.clean_title_for_search(unit["all_files"][0].name) if unit["all_files"] else unit["name"]
+        if self.exists_on_archive(search_title):
+            print(f"📋 Titlul '{search_title}' există deja pe Internet Archive!")
+
+            # Determină ce să șteargă bazat pe structura folderelor
+            folder_to_delete = self.determine_folder_to_delete(unit)
+
+            if self.delete_folder(folder_to_delete):
+                self.mark_unit_processed(unit["path"], unit["name"], "DELETED")
+                return True
+            return False
 
         if unit["has_pdf"]:
             if self.state["uploads_today"] >= MAX_UPLOADS_PER_DAY:
@@ -252,6 +384,36 @@ class ArchiveUploader:
                 print(f"⚠ Niciun fișier cu extensiile prioritare găsit în {unit['name']}")
                 self.mark_unit_processed(unit["path"], unit["name"], "GOLA")
                 return True
+
+    def determine_folder_to_delete(self, unit):
+        """Determină ce folder să șteargă bazat pe structura folderelor"""
+        current_path = unit["path"]
+        parent_path = current_path.parent
+
+        # Cazul 1: Dacă suntem la nivelul de bază (direct în ARCHIVE_PATH)
+        if parent_path == ARCHIVE_PATH:
+            print(f"📁 Caz 1: Șterg folderul principal: {current_path}")
+            return current_path
+
+        # Verifică câte subfoldere are părintele
+        try:
+            sibling_folders = [f for f in parent_path.iterdir() if f.is_dir()]
+            print(f"📊 Folderul părinte '{parent_path.name}' are {len(sibling_folders)} subfoldere")
+
+            # Cazul 2: Dacă părintele are mai multe subfoldere, șterge doar subfolderul curent
+            if len(sibling_folders) > 1:
+                print(f"📁 Caz 2: Șterg doar subfolderul: {current_path}")
+                return current_path
+
+            # Cazul 3: Dacă părintele are un singur subfolder, șterge părintele
+            else:
+                print(f"📁 Caz 3: Șterg folderul părinte (un singur subfolder): {parent_path}")
+                return parent_path
+
+        except Exception as e:
+            print(f"⚠ Eroare la determinarea structurii folderelor: {e}")
+            # În caz de eroare, șterge doar folderul curent
+            return current_path
 
     def find_priority_file(self, files):
         """Gaseste primul fisier conform prioritatii"""
@@ -705,50 +867,30 @@ class ArchiveUploader:
 
     def normalize_filename_for_matching(self, filename):
         """Normalizează numele fișierului pentru comparație"""
-        # Elimină extensia
         name = Path(filename).stem if isinstance(filename, (str, Path)) else str(filename)
-
-        # Convertește la lowercase
         name = name.lower()
-
-        # Înlocuiește caracterele speciale cu space sau elimină
         name = re.sub(r'[^\w\s]', ' ', name)
-
-        # Elimină spațiile multiple și strip
         name = re.sub(r'\s+', ' ', name).strip()
-
-        # Înlocuiește spațiile cu -
         name = name.replace(' ', '-')
-
         return name
 
     def find_original_file_for_error(self, error_filename, search_folders):
         """Găsește fișierul original pe baza numelui din eroare"""
         print(f"🔍 Caut fișierul original pentru: '{error_filename}'")
-
-        # Normalizează numele din eroare
         normalized_error = self.normalize_filename_for_matching(error_filename)
         print(f"   📝 Nume normalizat din eroare: '{normalized_error}'")
-
-        # Lista candidaților
         candidates = []
-
-        # Scanează toate fișierele din folderele procesate recent
         for folder_path in search_folders:
             if not folder_path.exists():
                 continue
-
             try:
                 for root, dirs, files in os.walk(folder_path):
                     for file in files:
                         file_path = Path(root) / file
                         if file_path.suffix.lower() in ['.pdf', '.epub', '.mobi', '.djvu', '.docx', '.doc']:
                             normalized_file = self.normalize_filename_for_matching(file)
-
-                            # Calculează similaritatea
                             similarity = difflib.SequenceMatcher(None, normalized_error, normalized_file).ratio()
-
-                            if similarity > 0.6:  # Threshold pentru potrivire
+                            if similarity > 0.6:
                                 candidates.append({
                                     'path': file_path,
                                     'similarity': similarity,
@@ -757,17 +899,13 @@ class ArchiveUploader:
                                 print(f"   📋 Candidat găsit: {file} (similaritate: {similarity:.2f})")
             except Exception as e:
                 print(f"   ⚠️ Eroare la scanarea folderului {folder_path}: {e}")
-
-        # Sortează după similaritate
         candidates.sort(key=lambda x: x['similarity'], reverse=True)
-
         if candidates:
             best_match = candidates[0]
             print(f"   ✅ Cea mai bună potrivire: {best_match['path'].name} (similaritate: {best_match['similarity']:.2f})")
             return best_match['path']
-        else:
-            print(f"   ❌ Nu am găsit fișierul original pentru '{error_filename}'")
-            return None
+        print(f"   ❌ Nu am găsit fișierul original pentru '{error_filename}'")
+        return None
 
     def copy_error_files_to_temp(self, failed_uploads):
         """Copiază fișierele cu erori direct în folderul TEMP - versiune simplificată"""
@@ -776,8 +914,6 @@ class ArchiveUploader:
             return []
 
         print(f"\n📁 === COPIERE FIȘIERE CU ERORI ÎN {TEMP_PATH} ===")
-
-        # Creează doar folderul TEMP principal
         try:
             TEMP_PATH.mkdir(exist_ok=True)
             print(f"📂 Folderul TEMP pregătit: {TEMP_PATH}")
@@ -785,57 +921,38 @@ class ArchiveUploader:
             print(f"❌ Eroare la crearea folderului TEMP: {e}")
             return []
 
-        # Obține lista folderelor procesate recent pentru căutare
         processed_folders = []
         for folder_path_str in self.state.get("processed_folders", []):
             folder_path = Path(folder_path_str)
             if folder_path.exists():
                 processed_folders.append(folder_path)
-
-        # Adaugă și folderul ARHIVA\B pentru căutare completă
         if ARCHIVE_PATH.exists():
             processed_folders.append(ARCHIVE_PATH)
 
         print(f"🔍 Voi căuta în {len(processed_folders)} foldere pentru fișierele cu erori")
-
         copied_files = []
         failed_copies = []
-
         for i, error_info in enumerate(failed_uploads, 1):
             print(f"\n📋 Procesez eroarea {i}/{len(failed_uploads)}: {error_info['filename']}")
-
-            # Găsește fișierul original
             original_file = self.find_original_file_for_error(error_info['filename'], processed_folders)
-
             if not original_file:
                 failed_copies.append({
                     'error_info': error_info,
                     'reason': 'Fișierul original nu a fost găsit'
                 })
                 continue
-
             try:
-                # Creează numele simplu cu cod eroare și timestamp
                 original_name = original_file.stem
                 original_ext = original_file.suffix
                 error_code = error_info.get('error_code', 'unknown')
                 timestamp = datetime.now().strftime("%H%M%S")
-
-                # Fișierul PDF direct în TEMP
                 dest_filename = f"{original_name}_ERROR-{error_code}_{timestamp}{original_ext}"
                 dest_path = TEMP_PATH / dest_filename
-
-                # Fișierul INFO direct în TEMP
                 info_filename = f"{original_name}_ERROR-{error_code}_{timestamp}_INFO.txt"
                 info_path = TEMP_PATH / info_filename
-
-                # Copiază fișierul PDF
                 print(f"   📁 Copiez: {original_file.name}")
                 print(f"   📁    → {dest_path}")
-
                 shutil.copy2(original_file, dest_path)
-
-                # Creează fișierul INFO
                 with open(info_path, 'w', encoding='utf-8') as f:
                     f.write(f"INFORMAȚII DESPRE EROAREA DE UPLOAD\n")
                     f.write("=" * 40 + "\n\n")
@@ -848,7 +965,6 @@ class ArchiveUploader:
                     f.write(f"DETALII XML EROARE:\n")
                     f.write("-" * 20 + "\n")
                     f.write(error_info.get('error_details', 'Nu sunt disponibile detalii XML'))
-
                 copied_files.append({
                     'original_path': original_file,
                     'copied_path': dest_path,
@@ -856,9 +972,7 @@ class ArchiveUploader:
                     'error_code': error_code,
                     'error_info': error_info
                 })
-
                 print(f"   ✅ Copiat cu succes în TEMP: {dest_filename}")
-
             except Exception as e:
                 print(f"   ❌ Eroare la copierea fișierului {original_file}: {e}")
                 failed_copies.append({
@@ -866,24 +980,19 @@ class ArchiveUploader:
                     'original_file': original_file,
                     'reason': str(e)
                 })
-
-        # Raport final simplificat
         print(f"\n📊 === RAPORT COPIERE FIȘIERE CU ERORI ===")
         print(f"✅ Fișiere copiate cu succes: {len(copied_files)}")
         print(f"❌ Eșecuri la copiere: {len(failed_copies)}")
-
         if copied_files:
             print(f"\n📁 FIȘIERE COPIATE ÎN {TEMP_PATH}:")
             for copied in copied_files:
                 print(f"   📄 {copied['copied_path'].name}")
                 print(f"   ℹ️  {copied['info_path'].name}")
-
         if failed_copies:
             print(f"\n❌ EȘECURI LA COPIERE:")
             for failed in failed_copies:
                 print(f"   📄 {failed['error_info']['filename']}")
                 print(f"      Motiv: {failed['reason']}")
-
         return copied_files
 
     def check_for_errors_after_upload(self):
