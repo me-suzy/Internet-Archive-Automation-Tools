@@ -1,0 +1,62 @@
+[2025-08-06 16:31:30] [INFO] ============================================================
+[2025-08-06 16:31:30] [INFO] 🚀 START - Internet Archive Duplicate Checker
+[2025-08-06 16:31:30] [INFO] 📁 Folder verificat: g:\ARHIVA\B
+[2025-08-06 16:31:30] [INFO] ⏱️ Delay între căutări: 2 secunde
+[2025-08-06 16:31:30] [INFO] ============================================================
+[2025-08-06 16:31:30] [INFO] 🔄 Resetez lista de foldere procesate pentru reverificare...
+[2025-08-06 16:31:30] [INFO] 🧪 TEST DIRECT - caut identifier-ul exact cunoscut:
+[2025-08-06 16:31:31] [INFO]    🎯 Căutare directă pentru 'berthon-simon-razboi-intre-aliati.-povestea-rivali...': 0 rezultate
+[2025-08-06 16:31:31] [INFO]    ❌ Identifier-ul exact NU a fost găsit în Archive.org
+[2025-08-06 16:31:31] [INFO]    💡 Probabil nu este încă indexat sau nu este public
+[2025-08-06 16:31:31] [INFO] 📂 Scanez folderul: g:\ARHIVA\B
+[2025-08-06 16:31:31] [INFO] 📊 Găsite 3 titluri unice de verificat
+[2025-08-06 16:31:31] [INFO] 
+📊 Progres: 1/3
+[2025-08-06 16:31:31] [INFO] 📂 Folder: Razboi intre aliati
+[2025-08-06 16:31:31] [INFO] 📄 Titlu căutat: Berthon, Simon - Razboi intre aliati. Povestea rivalitatii dintre Churchill, Roosevelt si de Gaulle - retail #ISTOR
+[2025-08-06 16:31:31] [INFO] 🔍 Caut pe Archive.org: 'Berthon, Simon - Razboi intre aliati. Povestea rivalitatii dintre Churchill, Roosevelt si de Gaulle - retail #ISTOR'
+[2025-08-06 16:31:31] [INFO]    ℹ️ Niciun rezultat găsit după titlu
+[2025-08-06 16:31:31] [INFO] 🔬 TESTEZ PATTERN-URI SIMPLE PENTRU DEBUG:
+[2025-08-06 16:31:31] [INFO]    🧪 Pattern 'berthon*': 0 rezultate
+[2025-08-06 16:31:32] [INFO]    🧪 Pattern 'simon*': 2572 rezultate
+[2025-08-06 16:31:32] [INFO]       1. SimonBoccanegra1881VersActI2PiangoSuVoiwarrenStiedry1950
+[2025-08-06 16:31:32] [INFO]       2. SimonBolivarAndJoseDeSanMartin
+[2025-08-06 16:31:32] [INFO]       3. SimonLakritz1991
+[2025-08-06 16:31:33] [INFO]    🧪 Pattern 'razboi*': 27 rezultate
+[2025-08-06 16:31:33] [INFO]       1. RazboiTetereaPSRMUntilaPN
+[2025-08-06 16:31:33] [INFO]       2. razboiul-sfant-documentar-din-cel-de-al-doilea-razboi-mondial
+[2025-08-06 16:31:33] [INFO]       3. RazboiulIngerilorEmilStrainu
+[2025-08-06 16:31:34] [INFO] 🔍 Caut duplicates cu pattern 1/6: 'berthon-simon*'
+[2025-08-06 16:31:34] [INFO]    📊 Găsite 0 identifier-uri pentru 'berthon-simon*'
+[2025-08-06 16:31:34] [INFO]    ℹ️ Niciun identifier găsit pentru 'berthon-simon*'
+[2025-08-06 16:31:35] [INFO] 🔍 Caut duplicates cu pattern 2/6: 'berthon-simon-razboi*'
+[2025-08-06 16:31:35] [INFO]    📊 Găsite 0 identifier-uri pentru 'berthon-simon-razboi*'
+[2025-08-06 16:31:35] [INFO]    ℹ️ Niciun identifier găsit pentru 'berthon-simon-razboi*'
+[2025-08-06 16:31:36] [INFO] 🔍 Caut duplicates cu pattern 3/6: 'berthon-simon-razboi-intre*'
+[2025-08-06 16:31:37] [INFO]    📊 Găsite 0 identifier-uri pentru 'berthon-simon-razboi-intre*'
+[2025-08-06 16:31:37] [INFO]    ℹ️ Niciun identifier găsit pentru 'berthon-simon-razboi-intre*'
+[2025-08-06 16:31:38] [INFO] 🔍 Caut duplicates cu pattern 4/6: 'berthon-simon-razboi-intre-aliati.*'
+[2025-08-06 16:31:38] [INFO]    📊 Găsite 0 identifier-uri pentru 'berthon-simon-razboi-intre-aliati.*'
+[2025-08-06 16:31:38] [INFO]    ℹ️ Niciun identifier găsit pentru 'berthon-simon-razboi-intre-aliati.*'
+[2025-08-06 16:31:39] [INFO] 🔍 Caut duplicates cu pattern 5/6: 'berthon-simon-razboi-intre-aliati.-povestea*'
+[2025-08-06 16:31:39] [INFO]    📊 Găsite 0 identifier-uri pentru 'berthon-simon-razboi-intre-aliati.-povestea*'
+[2025-08-06 16:31:39] [INFO]    ℹ️ Niciun identifier găsit pentru 'berthon-simon-razboi-intre-aliati.-povestea*'
+[2025-08-06 16:31:40] [INFO] 🔍 Caut duplicates cu pattern 6/6: 'berthon-simon-razboi-intre-aliati.-povestea-rivalitatii*'
+[2025-08-06 16:31:40] [INFO]    📊 Găsite 0 identifier-uri pentru 'berthon-simon-razboi-intre-aliati.-povestea-rivalitatii*'
+[2025-08-06 16:31:40] [INFO]    ℹ️ Niciun identifier găsit pentru 'berthon-simon-razboi-intre-aliati.-povestea-rivalitatii*'
+[2025-08-06 16:31:40] [INFO]    ❌ Nu s-au găsit duplicate pentru niciun pattern
+[2025-08-06 16:31:40] [INFO]    ℹ️ Păstrez folderul - nu există pe Archive.org
+[2025-08-06 16:31:40] [INFO] ⏳ Aștept 2 secunde...
+[2025-08-06 16:31:42] [INFO] 
+============================================================
+[2025-08-06 16:31:42] [INFO] 📊 RAPORT FINAL
+[2025-08-06 16:31:42] [INFO] ============================================================
+[2025-08-06 16:31:42] [INFO] ✅ Fișiere verificate: 1
+[2025-08-06 16:31:42] [INFO] 🗑️ Foldere șterse: 0
+[2025-08-06 16:31:42] [INFO] ❌ Erori întâmpinate: 0
+[2025-08-06 16:31:42] [INFO] 💾 Spațiu total eliberat: 0.00 MB
+[2025-08-06 16:31:42] [INFO] 📈 Total istoric foldere șterse: 0
+[2025-08-06 16:31:42] [INFO] ============================================================
+[2025-08-06 16:37:36] [INFO] goodbye ('127.0.0.1', 58690)
+[2025-08-06 16:37:36] [INFO] listener closed
+[2025-08-06 16:37:36] [INFO] server has terminated

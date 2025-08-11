@@ -1,3 +1,6 @@
+Sufixe: _202508, _20250806, _202411
+
+
 In timpul incarcarii fisierului in chrome,nu ai voie sa comuti pe o alta fereastra din chrome, caci se va pierde focusul pe pagina in curs de upload. Deci nu am voie sa umblu la alte ferestre din chrome cat timp se face upload.
 
 🎯 **Foarte bună observația!** Ai identificat o problemă reală și comună cu automatizările web!

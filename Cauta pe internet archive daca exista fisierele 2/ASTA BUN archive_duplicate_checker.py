@@ -17,7 +17,7 @@ from pathlib import Path
 from datetime import datetime
 
 # — Configurări generale —
-ARCHIVE_PATH = Path(r"g:\ARHIVA\B")
+ARCHIVE_PATH = Path(r"g:\ARHIVA\D")
 DELAY_BETWEEN_SEARCHES = 3   # secunde între cereri, redus pentru viteză
 STATE_FILE = Path("archive_cleanup_state.json")
 LOG_FILE = Path(f"archive_cleanup_log_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt")

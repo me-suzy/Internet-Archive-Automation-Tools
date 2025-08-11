@@ -664,7 +664,7 @@ class ArchiveUploader:
             return "unknown", "unknown"
 
     def check_single_tab_for_errors(self, window_handle, tab_index):
-        """Verifică o singură filă pentru erori 404 sau 505, inclusiv pop-up-uri"""
+        """Verifică o singură filă pentru erori 400/404/505/503, inclusiv pop-up-uri"""
         print(f"\n📋 === VERIFIC FILA #{tab_index}: {window_handle} ===")
         try:
             self.driver.switch_to.window(window_handle)
@@ -673,15 +673,61 @@ class ArchiveUploader:
             print(f"   🌐 URL: {current_url}")
             page_title = self.driver.title
             print(f"   📄 Titlu pagină: '{page_title}'")
+
+            # Verifică și în source-ul paginii pentru erori
+            page_source = self.driver.page_source
+            if "505" in page_source or "503" in page_source or "500" in page_source:
+                print(f"   🔍 Cod de eroare găsit în source-ul paginii!")
             print("   🔍 Caut mesajul de eroare...")
+
+            # Verifică dacă pop-up-ul este vizibil
+            try:
+                overlay = self.driver.find_element(By.ID, "overlay_alert")
+                is_visible = overlay.is_displayed()
+                print(f"   📱 Overlay alert găsit, vizibil: {is_visible}")
+                if not is_visible:
+                    print("   ⚠️ Pop-up-ul este ascuns!")
+            except NoSuchElementException:
+                print("   ⚠️ Nu există overlay_alert!")
+
             try:
                 error_div = self.driver.find_element(By.ID, "progress_msg")
                 error_text = error_div.text.strip()
                 print(f"   📝 Text găsit în #progress_msg: '{error_text}'")
+
+                # Verificare suplimentară pentru overlay_alert
+                try:
+                    overlay_alert = self.driver.find_element(By.ID, "overlay_alert")
+                    if overlay_alert.is_displayed():
+                        print("   🚨 OVERLAY_ALERT DETECTAT ȘI VIZIBIL!")
+                        # Extrage direct din overlay
+                        try:
+                            error_code_elem = overlay_alert.find_element(By.ID, "upload_error_code")
+                            error_status_elem = overlay_alert.find_element(By.ID, "upload_error_status")
+                            error_code = error_code_elem.text.strip()
+                            error_status = error_status_elem.text.strip()
+                            print(f"   📊 OVERLAY EROARE: {error_code} - {error_status}")
+
+                            if error_code in ["400", "404", "500", "503", "505"]:
+                                # Returnează eroarea
+                                return {
+                                    "filename": "overlay-detected-file",
+                                    "page_title": page_title,
+                                    "window_handle": window_handle,
+                                    "error_code": error_code,
+                                    "error_status": error_status,
+                                    "error_details": "Eroare detectată din overlay_alert",
+                                    "timestamp": datetime.now().isoformat()
+                                }
+                        except NoSuchElementException:
+                            print("   ⚠️ Nu am găsit elementele de eroare în overlay")
+                except NoSuchElementException:
+                    print("   ℹ️ Nu există overlay_alert")
+
                 if "There is a network problem" in error_text or "network problem" in error_text.lower():
                     print("   🚨 EROARE DE NETWORK DETECTATĂ!")
                 error_code, error_status = self.get_error_code_and_status()
-                if error_code in ["404", "505", "503"]:
+                if error_code in ["400", "404", "500", "503", "505"]:
                     print(f"   🚨 EROARE DETECTATĂ CU COD: {error_code} {error_status}")
                     xml_content = self.get_error_details_from_popup()
                     filename = self.extract_filename_from_xml(xml_content) if xml_content else "fisier-necunoscut"
@@ -694,7 +740,7 @@ class ArchiveUploader:
                         "error_details": xml_content or "Nu s-au putut obține detalii XML",
                         "timestamp": datetime.now().isoformat()
                     }
-                print("   ✅ Nu este eroare 404 sau 505 relevantă")
+                print("   ✅ Nu este eroare 400/404/505/503 relevantă")
                 return None
             except NoSuchElementException:
                 print("   ✅ Nu există elementul #progress_msg - nu sunt erori")
@@ -890,8 +936,8 @@ class ArchiveUploader:
         """Verifică toate filele deschise pentru erori 404, 505 sau 503 după 5 minute de la ultimul upload
         și copiază automat fișierele cu erori în g:\\TEMP\\"""
         print("\n⏳ Aștept 5 minute după ultimul upload pentru a verifica erorile...")
-        time.sleep(90)  # Așteaptă 5 minute
-        print("\n🔍 === ÎNCEPUT VERIFICARE ERORI 404/505/503 DUPĂ UPLOAD ===")
+        time.sleep(300)  # Așteaptă 5 minute
+        print("\n🔍 === ÎNCEPUT VERIFICARE ERORI 400/404/505/503 DUPĂ UPLOAD ===")
         if not self.driver:
             print("❌ Driver-ul Chrome nu este disponibil")
             return
@@ -909,11 +955,11 @@ class ArchiveUploader:
             failed_uploads = []
             for i, window_handle in enumerate(all_windows, 1):
                 error_info = self.check_single_tab_for_errors(window_handle, i)
-                if error_info and error_info["error_code"] in ["404", "505", "503"]:
+                if error_info and error_info["error_code"] in ["400", "404", "500", "503", "505"]:
                     failed_uploads.append(error_info)
                     print(f"   🚨 EROARE {error_info['error_code']}/{error_info['error_status']} CONFIRMATĂ în fila #{i}")
                 else:
-                    print(f"   ✅ Fila #{i} - OK, nu există erori 404/505/503")
+                    print(f"   ✅ Fila #{i} - OK, nu există erori 400/404/505/503")
                 time.sleep(2)
 
             try:
@@ -928,7 +974,7 @@ class ArchiveUploader:
 
             print(f"\n📊 === REZULTAT FINAL VERIFICARE ERORI ===")
             print(f"🔍 File verificate: {len(all_windows)}")
-            print(f"🚨 Erori 404/505/503 găsite: {len(failed_uploads)}")
+            print(f"🚨 Erori 400/404/505/503 găsite: {len(failed_uploads)}")
 
             # NOUĂ FUNCȚIONALITATE: Copiază fișierele cu erori în TEMP
             copied_files = []
@@ -938,7 +984,7 @@ class ArchiveUploader:
 
             failed_uploads_list = []
             if failed_uploads:
-                print(f"\n📋 LISTA FIȘIERELOR CU ERORI (404/505/503):")
+                print(f"\n📋 LISTA FIȘIERELOR CU ERORI (400/404/505/503):")
                 for i, error in enumerate(failed_uploads, 1):
                     print(f"   {i}. 📖 {error['filename']}")
                     print(f"      📄 Titlu: {error['page_title']}")
@@ -950,19 +996,21 @@ class ArchiveUploader:
                         print(f"      📝 Detalii: {error['error_details']}")
                     failed_uploads_list.append(error['filename'])
             else:
-                print("✅ Nu au fost găsite erori 404/505/503 în nicio filă!")
+                print("✅ Nu au fost găsite erori 400/404/505/503 în nicio filă!")
 
             # Salvează rezultatele în fișierul text original
-            filename = f"upload_errors_with_404_505_503_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+            error_reports_path = Path(r"e:\Carte\BB\17 - Site Leadership\alte\Ionel Balauta\Aryeht\Task 1 - Traduce tot site-ul\Doar Google Web\Andreea\Meditatii\2023\++Internet Archive BUN 2025 + Chrome\RAPOARTE_ERORI")  # sau alt director de preferat
+            error_reports_path.mkdir(exist_ok=True)
+            filename = error_reports_path / f"upload_errors_with_400_404_505_503_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
             if failed_uploads_list or not failed_uploads:
                 with open(filename, 'w', encoding='utf-8') as f:
-                    f.write(f"LISTA FIȘIERELOR CU ERORI (404/505/503) - {datetime.now().isoformat()}\n")
+                    f.write(f"LISTA FIȘIERELOR CU ERORI (400/404/505/503) - {datetime.now().isoformat()}\n")
                     f.write("=" * 60 + "\n\n")
                     if failed_uploads:
                         for i, error in enumerate(failed_uploads, 1):
                             f.write(f"{i}. 📖 {error['filename']} (Cod: {error['error_code']}, Status: {error['error_status']})\n")
                     else:
-                        f.write("✅ Nu au fost detectate erori 404/505/503 în nicio filă.\n")
+                        f.write("✅ Nu au fost detectate erori 400/404/505/503 în nicio filă.\n")
 
                     # Adaugă informații despre fișierele copiate
                     if copied_files:
@@ -985,15 +1033,15 @@ class ArchiveUploader:
     def save_error_results_to_file(self, filenames):
         """Salvează lista finală a titlurilor cu erori 404/505 într-un fișier"""
         try:
-            filename = f"upload_errors_with_404_505_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+            filename = f"upload_errors_with_400_404_505_503_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
             with open(filename, 'w', encoding='utf-8') as f:
-                f.write(f"LISTA FIȘIERELOR CU ERORI 404/505 - {datetime.now().isoformat()}\n")
+                f.write(f"LISTA FIȘIERELOR CU ERORI 400/404/505/503 - {datetime.now().isoformat()}\n")
                 f.write("=" * 60 + "\n\n")
                 if filenames:
                     for i, file_name in enumerate(filenames, 1):
                         f.write(f"{i}. 📖 {file_name}\n")
                 else:
-                    f.write("✅ Nu au fost detectate erori 404/505 în nicio filă.\n")
+                    f.write("✅ Nu au fost detectate erori 400/404/505/503 în nicio filă.\n")
             print(f"📄 Rezultatele erorilor au fost salvate în: {filename}")
         except Exception as e:
             print(f"⚠️ Nu am putut salva rezultatele erorilor în fișier: {e}")

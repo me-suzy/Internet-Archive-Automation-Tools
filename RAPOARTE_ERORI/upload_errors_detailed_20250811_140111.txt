@@ -1,0 +1,25 @@
+RAPORT DETALIAT VERIFICARE ERORI UPLOAD - 2025-08-11T14:01:11.225248
+======================================================================
+
+STATISTICI:
+- Tab-uri verificate: 1
+- Erori server reale: 1
+- Tab-uri închise prematur: 0
+- Total probleme: 1
+
+🚨 ERORI SERVER REALE (400/404/500/503/505):
+==================================================
+1. 📖 Almanahul Ostirii 1989 1711051444 Pages 101 150 (Cod: 503, Status: Slow Down)
+   Titlu: Upload to Internet Archive
+   Timp: 2025-08-11T14:01:07.257245
+
+
+======================================================================
+FIȘIERE CU ERORI COPIATE ÎN g:\TEMP:
+======================================================================
+
+📁 Almanahul_Ostirii_1989-1711051444__pages101-150.pdf
+   → Copiat în: g:\TEMP\Almanahul_Ostirii_1989-1711051444__pages101-150_ERROR-503_140109.pdf
+   → Info file: g:\TEMP\Almanahul_Ostirii_1989-1711051444__pages101-150_ERROR-503_140109_INFO.txt
+   → Cod eroare: 503
+

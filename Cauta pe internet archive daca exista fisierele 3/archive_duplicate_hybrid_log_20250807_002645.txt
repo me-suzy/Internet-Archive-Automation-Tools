@@ -1,0 +1,88 @@
+[2025-08-07 00:26:45] [INFO] 📋 Stare încărcată: 0 foldere procesate anterior
+[2025-08-07 00:26:45] [INFO] ============================================================
+[2025-08-07 00:26:45] [INFO] 🚀 START - Archive.org Hybrid Duplicate Checker
+[2025-08-07 00:26:45] [INFO] 📁 Folder verificat: g:\ARHIVA\B+
+[2025-08-07 00:26:45] [INFO] ⚡ Strategia hibridă: Căutare rapidă + Chrome fallback
+[2025-08-07 00:26:45] [INFO] ============================================================
+[2025-08-07 00:26:45] [INFO] 📂 Scanez folderul: g:\ARHIVA\B+
+[2025-08-07 00:26:45] [INFO] 📊 Găsite 74 foldere de verificat
+[2025-08-07 00:26:45] [INFO] 
+📊 Progres: 1/74
+[2025-08-07 00:26:45] [INFO] 
+📂 Verific folderul: Berila, Andra Cezara
+[2025-08-07 00:26:45] [INFO] 📄 Titlu căutare: Berila, Andra Cezara - Mesagerul
+[2025-08-07 00:26:45] [INFO] 🔍 NIVEL 1 - Căutare rapidă pentru: Berila, Andra Cezara - Mesagerul
+[2025-08-07 00:26:45] [INFO]    ℹ️ Niciun rezultat găsit în căutare
+[2025-08-07 00:26:45] [INFO] 🔧 Trec la Chrome simulation pentru confirmare...
+[2025-08-07 00:26:45] [INFO] 🔧 NIVEL 2 - Chrome simulation pentru: Berila, Andra Cezara
+[2025-08-07 00:26:45] [INFO] 🔧 Conectare la Chrome debug mode...
+[2025-08-07 00:26:46] [INFO] ✅ Conectat la Chrome cu succes
+[2025-08-07 00:26:46] [INFO] 🏠 Tab de bază: ACDA7AAE7F05E18ACEE464674C5BDC69
+[2025-08-07 00:26:46] [INFO] 🌐 Deschid tab nou pentru archive.org/upload...
+[2025-08-07 00:26:48] [INFO] ✅ Pagina de upload încărcată
+[2025-08-07 00:26:48] [INFO] 📤 Încarcă fișierul: Berila, Andra Cezara - Mesagerul.epub
+[2025-08-07 00:26:48] [INFO] ⏳ Aștept 8 secunde pentru generarea Page URL...
+[2025-08-07 00:26:56] [INFO] 📋 Page URL identifier: berila-andra-cezara-mesagerul
+[2025-08-07 00:26:56] [INFO] ✅ Identifier OK (fără sufix duplicat): berila-andra-cezara-mesagerul
+[2025-08-07 00:26:56] [INFO] 🗂️ Închid tab-ul curent...
+[2025-08-07 00:26:56] [INFO] 🏠 Revenit la tab-ul de bază
+[2025-08-07 00:26:56] [INFO] ✅ Nu e duplicat conform Chrome simulation
+[2025-08-07 00:26:56] [INFO] ✅ NU e duplicat - păstrez folderul
+[2025-08-07 00:26:56] [INFO] ⏳ Pauză 2 secunde...
+[2025-08-07 00:26:58] [INFO] 
+📊 Progres: 2/74
+[2025-08-07 00:26:58] [INFO] 
+📂 Verific folderul: Berindei, Mircea
+[2025-08-07 00:26:58] [INFO] 📄 Titlu căutare: Berindei, Mircea - Paravanul venetian
+[2025-08-07 00:26:58] [INFO] 🔍 NIVEL 1 - Căutare rapidă pentru: Berindei, Mircea - Paravanul venetian
+[2025-08-07 00:26:58] [INFO]    ℹ️ Niciun rezultat găsit în căutare
+[2025-08-07 00:26:58] [INFO] 🔧 Trec la Chrome simulation pentru confirmare...
+[2025-08-07 00:26:58] [INFO] 🔧 NIVEL 2 - Chrome simulation pentru: Berindei, Mircea
+[2025-08-07 00:26:58] [INFO] 🌐 Deschid tab nou pentru archive.org/upload...
+[2025-08-07 00:27:00] [INFO] ✅ Pagina de upload încărcată
+[2025-08-07 00:27:00] [INFO] 📤 Încarcă fișierul: Berindei, Mircea - Paravanul venetian - v.0.9.8.rtf
+[2025-08-07 00:27:00] [INFO] ⏳ Aștept 8 secunde pentru generarea Page URL...
+[2025-08-07 00:27:08] [INFO] 📋 Page URL identifier: berindei-mircea-paravanul-venetian-v.-0.9.8
+[2025-08-07 00:27:08] [INFO] ✅ Identifier OK (fără sufix duplicat): berindei-mircea-paravanul-venetian-v.-0.9.8
+[2025-08-07 00:27:08] [INFO] 🗂️ Închid tab-ul curent...
+[2025-08-07 00:27:08] [INFO] 🏠 Revenit la tab-ul de bază
+[2025-08-07 00:27:08] [INFO] ✅ Nu e duplicat conform Chrome simulation
+[2025-08-07 00:27:08] [INFO] ✅ NU e duplicat - păstrez folderul
+[2025-08-07 00:27:08] [INFO] ⏳ Pauză 2 secunde...
+[2025-08-07 00:27:10] [INFO] 
+📊 Progres: 3/74
+[2025-08-07 00:27:10] [INFO] 
+📂 Verific folderul: Berlin, Lucia
+[2025-08-07 00:27:10] [INFO] 📄 Titlu căutare: Berlin, Lucia - Manual pentru femei de serviciu
+[2025-08-07 00:27:10] [INFO] 🔍 NIVEL 1 - Căutare rapidă pentru: Berlin, Lucia - Manual pentru femei de serviciu
+[2025-08-07 00:27:10] [INFO]    ℹ️ Niciun rezultat găsit în căutare
+[2025-08-07 00:27:10] [INFO] 🔧 Trec la Chrome simulation pentru confirmare...
+[2025-08-07 00:27:10] [INFO] 🔧 NIVEL 2 - Chrome simulation pentru: Berlin, Lucia
+[2025-08-07 00:27:10] [INFO] 🌐 Deschid tab nou pentru archive.org/upload...
+[2025-08-07 00:27:11] [INFO] ✅ Pagina de upload încărcată
+[2025-08-07 00:27:11] [INFO] 📤 Încarcă fișierul: Berlin, Lucia - Manual pentru femei de serviciu - ctrl.djvu
+[2025-08-07 00:27:11] [INFO] ⏳ Aștept 8 secunde pentru generarea Page URL...
+[2025-08-07 00:27:19] [WARNING] 
+⚠️ Întrerupt de utilizator
+[2025-08-07 00:27:19] [INFO] 
+============================================================
+[2025-08-07 00:27:19] [INFO] 📊 RAPORT FINAL - Hybrid Archive Checker
+[2025-08-07 00:27:19] [INFO] ============================================================
+[2025-08-07 00:27:19] [INFO] ✅ Foldere verificate: 2
+[2025-08-07 00:27:19] [INFO] 🗑️ Foldere șterse (duplicate): 0
+[2025-08-07 00:27:19] [INFO] ❌ Erori întâmpinate: 0
+[2025-08-07 00:27:19] [INFO] 💾 Spațiu eliberat în această sesiune: 0.00 MB
+[2025-08-07 00:27:19] [INFO] 
+[2025-08-07 00:27:19] [INFO] 📈 STATISTICI METODE:
+[2025-08-07 00:27:19] [INFO] ⚡ Căutări rapide cu succes: 0
+[2025-08-07 00:27:19] [INFO] 🔧 Chrome simulation folosit: 3
+[2025-08-07 00:27:19] [INFO] 📊 Eficiență căutare rapidă: 0.0%
+[2025-08-07 00:27:19] [INFO] 
+[2025-08-07 00:27:19] [INFO] 📈 STATISTICI TOTALE:
+[2025-08-07 00:27:19] [INFO] 📈 Total istoric foldere șterse: 0
+[2025-08-07 00:27:19] [INFO] 📈 Total spațiu istoric eliberat: 0.00 MB
+[2025-08-07 00:27:19] [INFO] ============================================================
+[2025-08-07 00:27:19] [WARNING] Retrying (Retry(total=2, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None)': /session/8658b3918fe66331c20b20c5870d001d/window/handles
+[2025-08-07 00:35:44] [INFO] goodbye ('127.0.0.1', 55827)
+[2025-08-07 00:35:44] [INFO] listener closed
+[2025-08-07 00:35:44] [INFO] server has terminated
