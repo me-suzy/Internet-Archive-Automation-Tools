@@ -1,0 +1,63 @@
+<#
+.SYNOPSIS
+    Identifică și afișează caracterele problematice din numele fișierelor.
+.DESCRIPTION
+    Acest script scanează un folder și afișează fișierele care conțin caractere non-ASCII sau spații problematice.
+    Pentru fiecare fișier problematic, afișează numele și caracterele problematice detectate.
+#>
+
+$folderPath = "E:\Carte\BB\17 - Site Leadership\alte\Ionel Balauta\Aryeht\Task 1 - Traduce tot site-ul\Doar Google Web\Andreea\Meditatii\2023\++Internet Archive BUN 2025 + Chrome\Cauta pe internet archive daca exista fisierele 4"
+$outputFile = "E:\Carte\BB\17 - Site Leadership\alte\Ionel Balauta\Aryeht\Task 1 - Traduce tot site-ul\Doar Google Web\Andreea\Meditatii\2023\++Internet Archive BUN 2025 + Chrome\caractere_problematice.txt"
+
+# Golim fișierul de ieșire dacă există
+if (Test-Path $outputFile) {
+    Clear-Content $outputFile
+}
+
+Add-Content $outputFile "RAPORT CARACTERE PROBLEMATICE`n"
+Add-Content $outputFile "=================================`n`n"
+
+Get-ChildItem -Path $folderPath -File | ForEach-Object {
+    $fileName = $_.Name
+    $hasProblem = $false
+    $problemChars = @()
+
+    # Verifică fiecare caracter din numele fișierului
+    for ($i = 0; $i -lt $fileName.Length; $i++) {
+        $char = $fileName[$i]
+        $charCode = [int][char]$char
+
+        # Verifică dacă caracterul este non-ASCII sau spațiu problematic
+        if ($charCode -gt 127 -or $charCode -eq 160 -or ($char -match '[-_]' -and ($i -gt 0 -and $fileName[$i-1] -eq ' ') -or ($i -lt $fileName.Length-1 -and $fileName[$i+1] -eq ' '))) {
+            $hasProblem = $true
+            $problemChars += @{
+                Character = $char
+                Code = $charCode
+                Position = $i
+                Description = switch ($charCode) {
+                    160 { "Non-breaking space" }
+                    { $_ -gt 127 } { "Non-ASCII character" }
+                    { $char -match '[-_]' -and ($i -gt 0 -and $fileName[$i-1] -eq ' ') } { "$char preceded by space" }
+                    { $char -match '[-_]' -and ($i -lt $fileName.Length-1 -and $fileName[$i+1] -eq ' ') } { "$char followed by space" }
+                    default { "Unknown problematic character" }
+                }
+            }
+        }
+    }
+
+    if ($hasProblem) {
+        Add-Content $outputFile "Fișier: $fileName"
+        Add-Content $outputFile "---------------------------------"
+
+        foreach ($problemChar in $problemChars) {
+            $charInfo = "Poziție $($problemChar.Position): '$($problemChar.Character)' (Cod: $($problemChar.Code)) - $($problemChar.Description)"
+            Add-Content $outputFile $charInfo
+        }
+
+        Add-Content $outputFile "`n"
+        Write-Host "Fișier problematic găsit: $fileName"
+    }
+}
+
+Write-Host "`nRaportul a fost salvat în: $outputFile"
+Write-Host "Deschide fișierul pentru a vedea detaliile caracterelor problematice."

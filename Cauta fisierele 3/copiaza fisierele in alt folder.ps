@@ -1,0 +1,13 @@
+$sourceFolder = "E:\Carte\BB\17 - Site Leadership\alte\Ionel Balauta\Aryeht\Task 1 - Traduce tot site-ul\Doar Google Web\Andreea\Meditatii\2023\++Internet Archive BUN 2025 + Chrome\Cauta pe internet archive daca exista fisierele 4"
+$destinationFolder = "C:\Temp\TestFiles"
+
+# Creează folderul de destinație dacă nu există
+if (!(Test-Path -Path $destinationFolder)) {
+    New-Item -ItemType Directory -Path $destinationFolder -Force
+}
+
+Get-ChildItem -Path $sourceFolder -File | ForEach-Object {
+    $destinationPath = Join-Path -Path $destinationFolder -ChildPath $_.Name
+    Copy-Item -Path $_.FullName -Destination $destinationPath -Force
+    Write-Host "Fișier copiat: $($_.Name)"
+}

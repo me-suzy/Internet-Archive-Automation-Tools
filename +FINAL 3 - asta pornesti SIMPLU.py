@@ -46,9 +46,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import WebDriverException, TimeoutException, NoSuchElementException
 
+
 # Configurari
-ARCHIVE_PATH = Path(r"g:\ARHIVA\c++")
-MOVE_PATH = Path(r"d:\3")
+ARCHIVE_PATH = Path(r"g:\ARHIVA\CC+") # - Aici e folderul cu fisiere
+MOVE_PATH = Path(r"d:\3")  # Aici e folderul unde copiezi fisierele diferite de PDF
 TEMP_PATH = Path(r"g:\TEMP")  # NOUĂ: Pentru fișierele cu erori
 ARCHIVE_URL = "https://archive.org/upload"
 MAX_UPLOADS_PER_DAY = 9999
@@ -104,7 +105,18 @@ class ArchiveUploader:
     def is_unit_processed(self, unit_path):
         """Verifică dacă o unitate a fost deja procesată"""
         unit_key = str(unit_path)
-        return unit_key in self.state.get("processed_units", [])
+        is_processed = unit_key in self.state.get("processed_units", [])
+
+        # DEBUG: Afișează toate căile procesate pentru investigare
+        if "C.O.C.C" in unit_key:
+            print(f"🔍 DEBUG - Verific calea: {unit_key}")
+            print(f"🔍 DEBUG - Este procesată: {is_processed}")
+            print(f"🔍 DEBUG - Căi procesate care conțin 'C.O.C.C':")
+            for processed_path in self.state.get("processed_units", []):
+                if "C.O.C.C" in processed_path:
+                    print(f"    📋 {processed_path}")
+
+        return is_processed
 
     def mark_unit_processed(self, unit_path, unit_name, action_type):
         """Marchează o unitate ca procesată"""
