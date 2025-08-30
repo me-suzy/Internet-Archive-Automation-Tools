@@ -1,0 +1,10 @@
+RAPORT DETALIAT VERIFICARE ERORI UPLOAD - 2025-08-26T13:35:12.958185
+======================================================================
+
+STATISTICI:
+- Tab-uri verificate: 125
+- Erori server reale: 0
+- Tab-uri închise prematur: 0
+- Total probleme: 0
+
+✅ Nu au fost detectate probleme în niciun tab.

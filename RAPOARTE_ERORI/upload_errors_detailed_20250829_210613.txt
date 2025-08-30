@@ -1,0 +1,25 @@
+RAPORT DETALIAT VERIFICARE ERORI UPLOAD - 2025-08-29T21:06:13.629531
+======================================================================
+
+STATISTICI:
+- Tab-uri verificate: 65
+- Erori server reale: 1
+- Tab-uri închise prematur: 0
+- Total probleme: 1
+
+🚨 ERORI SERVER REALE (400/404/500/503/505):
+==================================================
+1. 📖 Cojocaru Filipiuc, Vasile Obtinerea Otelului Si Aspecte Structurale Ale Aliajelor Feroase Retail (Cod: 400, Status: Error detected in page source: bad request)
+   Titlu: Upload to Internet Archive
+   Timp: 2025-08-29T21:03:30.956177
+
+
+======================================================================
+FIȘIERE CU ERORI COPIATE ÎN g:\TEMP:
+======================================================================
+
+📁 Cojocaru-Filipiuc, Vasile - Obtinerea otelului si aspecte structurale ale aliajelor feroase - retail.pdf
+   → Copiat în: g:\TEMP\Cojocaru-Filipiuc, Vasile - Obtinerea otelului si aspecte structurale ale aliajelor feroase - retail_ERROR-400_210612.pdf
+   → Info file: g:\TEMP\Cojocaru-Filipiuc, Vasile - Obtinerea otelului si aspecte structurale ale aliajelor feroase - retail_ERROR-400_210612_INFO.txt
+   → Cod eroare: 400
+

@@ -48,7 +48,7 @@ from selenium.common.exceptions import WebDriverException, TimeoutException, NoS
 
 
 # Configurari
-ARCHIVE_PATH = Path(r"g:\ARHIVA\CC+") # - Aici e folderul cu fisiere
+ARCHIVE_PATH = Path(r"g:\ARHIVA\C") # - Aici e folderul cu fisiere
 MOVE_PATH = Path(r"d:\3")  # Aici e folderul unde copiezi fisierele diferite de PDF
 TEMP_PATH = Path(r"g:\TEMP")  # NOUĂ: Pentru fișierele cu erori
 ARCHIVE_URL = "https://archive.org/upload"

@@ -300,7 +300,7 @@ def scan_and_delete_found_folders(base_directory, use_backup=True):
         print("❌ Operațiune anulată.")
 
 def main():
-    base_directory = r"g:\ARHIVA\C"
+    base_directory = r"g:\ARHIVA\A"
 
     print("🗄️  CURĂȚARE AUTOMATĂ ARHIVĂ")
     print("="*50)

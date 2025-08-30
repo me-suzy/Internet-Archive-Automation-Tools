@@ -1,0 +1,25 @@
+RAPORT DETALIAT VERIFICARE ERORI UPLOAD - 2025-08-30T01:27:48.412225
+======================================================================
+
+STATISTICI:
+- Tab-uri verificate: 109
+- Erori server reale: 1
+- Tab-uri închise prematur: 0
+- Total probleme: 1
+
+🚨 ERORI SERVER REALE (400/404/500/503/505):
+==================================================
+1. 📖 Alimanestianu, Pia Prin Cetatea Lui Bucur Scan (Cod: 400, Status: Bad Data)
+   Titlu: Upload to Internet Archive
+   Timp: 2025-08-30T01:23:30.472457
+
+
+======================================================================
+FIȘIERE CU ERORI COPIATE ÎN g:\TEMP:
+======================================================================
+
+📁 Alimanestianu, Pia - Prin Cetatea lui Bucur - scan.pdf
+   → Copiat în: g:\TEMP\Alimanestianu, Pia - Prin Cetatea lui Bucur - scan_ERROR-400_012747.pdf
+   → Info file: g:\TEMP\Alimanestianu, Pia - Prin Cetatea lui Bucur - scan_ERROR-400_012747_INFO.txt
+   → Cod eroare: 400
+

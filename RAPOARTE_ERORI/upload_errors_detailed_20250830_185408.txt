@@ -1,0 +1,25 @@
+RAPORT DETALIAT VERIFICARE ERORI UPLOAD - 2025-08-30T18:54:08.871970
+======================================================================
+
+STATISTICI:
+- Tab-uri verificate: 66
+- Erori server reale: 1
+- Tab-uri închise prematur: 0
+- Total probleme: 1
+
+🚨 ERORI SERVER REALE (400/404/500/503/505):
+==================================================
+1. 📖 Durrell, Gerald Pasari, Lighioane Si Rubedenii Scan (Cod: 400, Status: Bad Data)
+   Titlu: Upload to Internet Archive
+   Timp: 2025-08-30T18:52:12.738603
+
+
+======================================================================
+FIȘIERE CU ERORI COPIATE ÎN g:\TEMP:
+======================================================================
+
+📁 Durrell, Gerald - Pasari, lighioane si rubedenii - scan.pdf
+   → Copiat în: g:\TEMP\Durrell, Gerald - Pasari, lighioane si rubedenii - scan_ERROR-400_185407.pdf
+   → Info file: g:\TEMP\Durrell, Gerald - Pasari, lighioane si rubedenii - scan_ERROR-400_185407_INFO.txt
+   → Cod eroare: 400
+
