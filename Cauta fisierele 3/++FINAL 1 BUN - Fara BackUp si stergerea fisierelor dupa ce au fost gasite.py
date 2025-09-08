@@ -112,7 +112,8 @@ def format_size(size_bytes):
 
 def scan_and_delete_found_folders(base_directory, use_backup=True):
     """
-    Scanează arhiva și șterge automat folderele găsite pe Archive.org.
+    Scanează arhiva și șterge automat SUBFOLDERELE găsite pe Archive.org.
+    VERSIUNE CORECTATĂ - testează fiecare subfolder individual.
     """
     base_path = Path(base_directory)
     if not base_path.exists():
@@ -121,7 +122,6 @@ def scan_and_delete_found_folders(base_directory, use_backup=True):
 
     backup_directory = None
     if use_backup:
-        # Creează directorul de backup
         backup_directory = str(base_path.parent / "ARCHIVE_BACKUP")
         os.makedirs(backup_directory, exist_ok=True)
         print(f"🔒 Backup folder: {backup_directory}")
@@ -142,50 +142,73 @@ def scan_and_delete_found_folders(base_directory, use_backup=True):
 
     print(f"📊 Total fișiere găsite: {len(all_files)}")
 
-    # Grupează pe foldere de autor
-    print("📂 Grupez pe foldere de autor...")
-    folders_to_process = {}
+    # MODIFICARE CRITICĂ: Grupează pe SUBFOLDERE, nu pe autor
+    print("📂 Grupez pe subfoldere individuale...")
+    subfolders_to_process = {}
+
     for filepath in all_files:
         try:
             relative_path = Path(filepath).relative_to(base_path)
-            if relative_path.parts:
-                author_folder_name = relative_path.parts[0]
-                author_folder_path = base_path / author_folder_name
 
-                if author_folder_name not in folders_to_process:
-                    folders_to_process[author_folder_name] = {
-                        'path': str(author_folder_path),
-                        'files': []
+            # Pentru fiecare fișier, identifică subfolderul direct
+            if len(relative_path.parts) >= 2:
+                # Format: author/book_folder/file.pdf
+                author_name = relative_path.parts[0]
+                book_folder = relative_path.parts[1]
+                subfolder_key = f"{author_name}/{book_folder}"
+                subfolder_path = base_path / author_name / book_folder
+
+                if subfolder_key not in subfolders_to_process:
+                    subfolders_to_process[subfolder_key] = {
+                        'path': str(subfolder_path),
+                        'files': [],
+                        'author': author_name,
+                        'book': book_folder
                     }
 
-                folders_to_process[author_folder_name]['files'].append(str(filepath))
+                subfolders_to_process[subfolder_key]['files'].append(str(filepath))
+            elif len(relative_path.parts) == 2:
+                # Format direct: author/file.pdf
+                author_name = relative_path.parts[0]
+                author_folder_path = base_path / author_name
+
+                if author_name not in subfolders_to_process:
+                    subfolders_to_process[author_name] = {
+                        'path': str(author_folder_path),
+                        'files': [],
+                        'author': author_name,
+                        'book': 'direct_files'
+                    }
+
+                subfolders_to_process[author_name]['files'].append(str(filepath))
+
         except ValueError:
             continue
 
-    total_folders = len(folders_to_process)
-    print(f"📂 Găsite {total_folders} foldere de procesat")
+    total_subfolders = len(subfolders_to_process)
+    print(f"📂 Găsite {total_subfolders} subfoldere de procesat")
     print("\n🔍 Încep căutarea pe Archive.org...")
     print("="*60)
 
-    folders_to_delete = []
+    subfolders_to_delete = []
     processed = 0
     found_count = 0
-
     start_time = time.time()
 
-    for folder_name, folder_info in folders_to_process.items():
+    # TESTEAZĂ FIECARE SUBFOLDER INDIVIDUAL
+    for subfolder_key, subfolder_info in subfolders_to_process.items():
         processed += 1
 
-        # Afișează progresul pentru FIECARE folder
         elapsed = time.time() - start_time
         rate = processed / elapsed if elapsed > 0 else 0
-        eta_seconds = (total_folders - processed) / rate if rate > 0 else 0
+        eta_seconds = (total_subfolders - processed) / rate if rate > 0 else 0
         eta_minutes = int(eta_seconds / 60)
 
-        print(f"[{processed:3}/{total_folders}] {folder_name[:40]:<40}", end=" ")
+        display_name = f"{subfolder_info['author']} - {subfolder_info['book']}"
+        print(f"[{processed:3}/{total_subfolders}] {display_name[:50]:<50}", end=" ")
 
-        if folder_info['files']:
-            test_file = folder_info['files'][0]
+        if subfolder_info['files']:
+            test_file = subfolder_info['files'][0]
             search_query, _ = process_filename(test_file)
 
             print(f"🔍 Caut...", end=" ")
@@ -193,114 +216,121 @@ def scan_and_delete_found_folders(base_directory, use_backup=True):
             found, results = search_archive_org(search_query, min_relevance_score=0.5)
 
             if found and results:
-                folder_size = calculate_folder_size(folder_info['path'])
-                folders_to_delete.append({
-                    'name': folder_name,
-                    'path': folder_info['path'],
-                    'size': folder_size,
-                    'files_count': len(folder_info['files']),
+                subfolder_size = calculate_folder_size(subfolder_info['path'])
+                subfolders_to_delete.append({
+                    'name': display_name,
+                    'path': subfolder_info['path'],
+                    'size': subfolder_size,
+                    'files_count': len(subfolder_info['files']),
                     'query': search_query,
                     'best_match': results[0]['title'],
-                    'relevance_score': results[0]['relevance_score']
+                    'relevance_score': results[0]['relevance_score'],
+                    'author': subfolder_info['author'],
+                    'book': subfolder_info['book']
                 })
                 found_count += 1
-                print(f"✅ GĂSIT ({format_size(folder_size)}) ETA: {eta_minutes}min")
+                print(f"✅ GĂSIT ({format_size(subfolder_size)}) ETA: {eta_minutes}min")
             else:
                 print(f"❌ Nu există    ETA: {eta_minutes}min")
         else:
             print("❌ Fără fișiere")
 
-        time.sleep(0.3)  # Pauză pentru a nu suprasolicita API-ul
+        time.sleep(0.3)
 
-    if not folders_to_delete:
-        print("\n✅ Nu s-au găsit foldere de șters. Toate cărțile din arhivă sunt unice!")
+    # =================== PARTEA CARE LIPSEA ===================
+
+    if not subfolders_to_delete:
+        print("\n✅ Nu s-au găsit subfoldere de șters. Toate cărțile din arhivă sunt unice!")
         return
 
     # Calculează statistici
-    total_size = sum(folder['size'] for folder in folders_to_delete)
+    total_size = sum(subfolder['size'] for subfolder in subfolders_to_delete)
 
     print(f"\n{'='*60}")
     print(f"📊 RAPORT FINAL")
     print(f"{'='*60}")
-    print(f"Foldere procesate: {total_folders}")
-    print(f"Foldere găsite pe Archive.org: {found_count}")
+    print(f"Subfoldere procesate: {total_subfolders}")
+    print(f"Subfoldere găsite pe Archive.org: {found_count}")
     print(f"Spațiu de eliberat: {format_size(total_size)}")
-    print(f"Rata de succes: {found_count/total_folders*100:.1f}%")
+    print(f"Rata de succes: {found_count/total_subfolders*100:.1f}%")
 
-    print(f"\n📋 Primele 10 foldere de șters:")
-    for i, folder in enumerate(folders_to_delete[:10], 1):
-        print(f"   {i:2}. {folder['name'][:35]:<35} - {format_size(folder['size']):>8}")
-        print(f"       Găsit ca: {folder['best_match'][:50]}")
+    print(f"\n📋 Primele 10 subfoldere de șters:")
+    for i, subfolder in enumerate(subfolders_to_delete[:10], 1):
+        print(f"   {i:2}. {subfolder['name'][:50]:<50} - {format_size(subfolder['size']):>8}")
+        print(f"       Găsit ca: {subfolder['best_match'][:60]}")
 
-    if len(folders_to_delete) > 10:
-        print(f"   ... și încă {len(folders_to_delete) - 10} foldere")
+    if len(subfolders_to_delete) > 10:
+        print(f"   ... și încă {len(subfolders_to_delete) - 10} subfoldere")
 
     if use_backup:
         print(f"\n⚠️  ATENȚIE!")
-        print(f"   • Se vor muta {found_count} foldere în backup")
+        print(f"   • Se vor muta {found_count} subfoldere în backup")
         print(f"   • Se vor elibera {format_size(total_size)} de spațiu")
         print(f"   • Backup folder: {backup_directory}")
     else:
         print(f"\n⚠️  ATENȚIE - ȘTERGERE DEFINITIVĂ!")
-        print(f"   • Se vor ȘTERGE DEFINITIV {found_count} foldere")
+        print(f"   • Se vor ȘTERGE DEFINITIV {found_count} subfoldere")
         print(f"   • Se vor elibera {format_size(total_size)} de spațiu")
         print(f"   • NU VA EXISTA BACKUP!")
 
     # Confirmarea finală
     action_word = "muta în backup" if use_backup else "șterge definitiv"
-    confirmation = input(f"\n🗑️  Dorești să {action_word} toate folderele găsite? (scrie 'DA' pentru confirmare): ")
+    confirmation = input(f"\n🗑️  Dorești să {action_word} toate subfolderele găsite? (scrie 'DA' pentru confirmare): ")
 
     if confirmation.upper() == 'DA':
-        action_msg = f"backup-ul {found_count} foldere..." if use_backup else f"ștergerea DEFINITIVĂ a {found_count} foldere..."
+        action_msg = f"backup-ul {found_count} subfoldere..." if use_backup else f"ștergerea DEFINITIVĂ a {found_count} subfoldere..."
         print(f"\n🚀 Încep {action_msg}")
         print("="*60)
 
         deleted_count = 0
         deleted_size = 0
 
-        for i, folder in enumerate(folders_to_delete, 1):
+        for i, subfolder in enumerate(subfolders_to_delete, 1):
             try:
                 action_verb = "Backup" if use_backup else "Șterg"
-                print(f"[{i:3}/{found_count}] {action_verb} {folder['name'][:40]:<40}", end=" ")
+                print(f"[{i:3}/{found_count}] {action_verb} {subfolder['name'][:40]:<40}", end=" ")
 
                 if use_backup:
                     # Mută în backup cu timestamp
                     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                    backup_path = os.path.join(backup_directory, f"{folder['name']}_{timestamp}")
-                    shutil.move(folder['path'], backup_path)
-                    print(f"✅ Mutat ({format_size(folder['size'])})")
+                    safe_name = subfolder['name'].replace('/', '_').replace('\\', '_')
+                    backup_path = os.path.join(backup_directory, f"{safe_name}_{timestamp}")
+                    shutil.move(subfolder['path'], backup_path)
+                    print(f"✅ Mutat ({format_size(subfolder['size'])})")
                 else:
                     # Șterge definitiv
-                    shutil.rmtree(folder['path'])
-                    print(f"✅ Șters definitiv ({format_size(folder['size'])})")
+                    shutil.rmtree(subfolder['path'])
+                    print(f"✅ Șters definitiv ({format_size(subfolder['size'])})")
 
                 deleted_count += 1
-                deleted_size += folder['size']
+                deleted_size += subfolder['size']
 
             except Exception as e:
                 print(f"❌ Eroare: {e}")
 
         print(f"\n🎉 OPERAȚIUNE COMPLETĂ!")
         print(f"{'='*60}")
-        print(f"   ✅ Foldere procesate: {deleted_count}/{found_count}")
+        print(f"   ✅ Subfoldere procesate: {deleted_count}/{found_count}")
         print(f"   💾 Spațiu eliberat: {format_size(deleted_size)}")
 
         if use_backup:
             print(f"   🔒 Backup salvat în: {backup_directory}")
         else:
-            print(f"   ⚠️  Foldere ȘTERSE DEFINITIV - nu există backup!")
+            print(f"   ⚠️  Subfoldere ȘTERSE DEFINITIV - nu există backup!")
 
         # Salvează log-ul
-        log_file = f"deleted_folders_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        log_file = f"deleted_subfolders_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         with open(log_file, 'w', encoding='utf-8') as f:
-            json.dump(folders_to_delete, f, ensure_ascii=False, indent=2)
+            json.dump(subfolders_to_delete, f, ensure_ascii=False, indent=2)
         print(f"   📄 Log salvat în: {log_file}")
 
     else:
         print("❌ Operațiune anulată.")
 
+
+
 def main():
-    base_directory = r"g:\ARHIVA\A"
+    base_directory = r"g:\ARHIVA\C"
 
     print("🗄️  CURĂȚARE AUTOMATĂ ARHIVĂ")
     print("="*50)
